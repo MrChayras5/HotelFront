@@ -6,7 +6,8 @@ export interface HabitacionRequest {
   tipo: string;
   precio: number;
   capacidad: number;
-  estado: 'Disponible' | 'Ocupada' | 'Limpieza' | 'Mantenimiento';
+ // estado: 'Disponible' | 'Ocupada' | 'Limpieza' | 'Mantenimiento';
+  estado: string;
 }
 
 // DTO que recibimos del backend 
