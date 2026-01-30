@@ -1,0 +1,85 @@
+<div class="container mt-4">
+  <h2>Nueva Reserva</h2>
+  <form [formGroup]="reservaForm" (ngSubmit)="guardarReserva()" class="row g-3 border p-3 rounded bg-light">
+    <div class="col-md-6">
+      <label>Huésped</label>
+      <select formControlName="huespedId" class="form-select">
+        <option *ngFor="let h of huespedes" [value]="h.id">{{ h.nombre }} {{ h.apellido }}</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label>Habitación (Solo Disponibles)</label>
+      <select formControlName="habitacionId" class="form-select">
+        <option *ngFor="let hab of habitacionesDisponibles" [value]="hab.id">
+          Hab {{ hab.numero }} - {{ hab.tipo }} (${{ hab.precio }}/noche)
+        </option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label>Fecha Entrada</label>
+      <input type="date" formControlName="fechaEntrada" class="form-control">
+    </div>
+    <div class="col-md-4">
+      <label>Fecha Salida</label>
+      <input type="date" formControlName="fechaSalida" class="form-control">
+    </div>
+    <div class="col-md-4">
+      <label>Total a Pagar</label>
+      <input type="text" formControlName="total" class="form-control fw-bold text-primary">
+    </div>
+    <div class="col-12 text-end">
+      <button type="submit" class="btn btn-primary" [disabled]="reservaForm.invalid">Crear Reserva</button>
+    </div>
+  </form>
+
+  <h3 class="mt-5">Listado de Reservas</h3>
+  <table class="table table-hover mt-3">
+    <thead class="table-dark">
+      <tr>
+        <th>Habitación</th>
+        <th>Huésped</th>
+        <th>Fechas</th>
+        <th>Total</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of listaReservas">
+        <td>{{ r.habitacionId }}</td>
+        <td>{{ r.huespedId }}</td>
+        <td>{{ r.fechaEntrada }} al {{ r.fechaSalida }}</td>
+        <td>{{ r.total | currency }}</td>
+        <td>
+          <span class="badge" [ngClass]="{
+            'bg-primary': r.estado === 'Confirmada',
+            'bg-warning': r.estado === 'En curso',
+            'bg-success': r.estado === 'Finalizada',
+            'bg-danger': r.estado === 'Cancelada'
+          }">{{ r.estado }}</span>
+        </td>
+        <td>
+  <button 
+    *ngIf="r.estado === 'Confirmada'" 
+    class="btn btn-sm btn-info"
+    [disabled]="!puedeRealizarCheckIn()"
+    (click)="confirmarCheckIn(r)"
+    [title]="!puedeRealizarCheckIn() ? 'Disponible solo después de las 15:00' : 'Realizar Check-in'">
+    <i class="fa fa-clock"></i> Check-in
+  </button>
+
+  <button 
+    *ngIf="r.estado === 'En curso'" 
+    class="btn btn-sm btn-success"
+    (click)="procesarCheckOut(r)">
+    Check-out
+  </button>
+  
+  <span *ngIf="r.estado === 'Finalizada' || r.estado === 'Cancelada'" class="text-muted small">
+    Sin acciones
+  </span>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
