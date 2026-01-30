@@ -15,6 +15,7 @@ import { LoginComponent } from './components/login/login.component';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { AuthInterceptor } from './shared/auth.interceptor';
 import { ErrorInterceptor } from './shared/error.interceptor';
+import { ReservasComponent } from './components/reservas/reservas.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ErrorInterceptor } from './shared/error.interceptor';
     NavbarComponent,
     FooterComponent,
     LoginComponent,
-    UsuariosComponent
+    UsuariosComponent,
+    ReservasComponent
   ],
   imports: [
     BrowserModule,
